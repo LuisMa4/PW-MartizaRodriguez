@@ -131,6 +131,41 @@ p {
   height: auto;
 }
 
+.barra__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.barra__red {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--oro-claro);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.barra__red:hover {
+  background: var(--oro-claro);
+  color: #000;
+}
+
+.barra__red svg,
+.contacto__redes svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .barra__accion {
   padding: 9px 16px 10px;
   border: 1px solid rgba(236, 210, 155, 0.65);
@@ -633,7 +668,18 @@ p {
   margin-top: 6px;
 }
 
-.contacto__usuario {
+.contacto__redes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 24px;
+}
+
+.contacto__redes a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
   color: var(--oro-claro);
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -737,6 +783,10 @@ p {
 @media (max-width: 699px) {
   body {
     padding-bottom: 0;
+  }
+
+  .barra__acciones {
+    gap: 6px;
   }
 
   .barra__accion {

@@ -23,6 +23,22 @@
   const enlaceInstagram = `https://www.instagram.com/${sitio.instagram}/`;
   const enlaceMensaje = `https://ig.me/m/${sitio.instagram}`;
 
+  /* Las redes van como iconos en la barra superior y con su nombre en el contacto. */
+  const redes = [
+    {
+      nombre: 'Instagram',
+      enlace: enlaceInstagram,
+      icono: '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+    },
+    {
+      nombre: 'Facebook',
+      enlace: sitio.facebook ? `https://www.facebook.com/${sitio.facebook}` : '',
+      icono: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+    },
+  ].filter((red) => red.enlace);
+
+  const iconoRed = (red) => `<svg viewBox="0 0 24 24" aria-hidden="true">${red.icono}</svg>`;
+
   function enlaceWhatsapp(salaElegida) {
     const texto = sitio.mensajeWhatsapp.replace('{sesion}', salaElegida ? salaElegida.sesion : 'de fotos');
     return `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
@@ -36,6 +52,10 @@
   /* ---------- Barras y cierre ---------- */
 
   function montarBarras() {
+    const iconos = redes
+      .map((red) => `<a class="barra__red" href="${red.enlace}" target="_blank" rel="noopener" aria-label="${red.nombre}">${iconoRed(red)}</a>`)
+      .join('');
+
     const enlaces = SALAS.map((item) => {
       const actual = item === sala ? ' aria-current="page"' : '';
       return `<a href="${item.href}" data-sala-enlace="${item.id}"${actual}>${item.nombre}</a>`;
@@ -47,7 +67,10 @@
         <a class="barra__marca" href="index.html" aria-label="Maritza Rodríguez Fotografía, inicio">
           <img src="assets/logos/monograma.webp" alt="" width="300" height="240">
         </a>
-        <a class="barra__accion" href="${contacto.enlace}" target="_blank" rel="noopener">Coordina tu sesión</a>
+        <div class="barra__acciones">
+          ${iconos}
+          <a class="barra__accion" href="${contacto.enlace}" target="_blank" rel="noopener">Coordina tu sesión</a>
+        </div>
       </header>
       <nav class="salas" aria-label="Categorías">${enlaces}</nav>`
     );
@@ -78,12 +101,14 @@
     lugar.innerHTML = `${siguiente}
       <div class="contacto">
         <h2>Coordina tu sesión</h2>
-        <p>Cuéntale a Maritza qué tienes en mente y la fecha que te gustaría.</p>
+        <p>Cuéntame qué tienes en mente y la fecha que te gustaría.</p>
         <div class="contacto__acciones">
           <a class="boton" href="${contacto.enlace}" target="_blank" rel="noopener">${contacto.texto}</a>
           ${instagram}
         </div>
-        <a class="contacto__usuario" href="${enlaceInstagram}" target="_blank" rel="noopener">@${sitio.instagram}</a>
+        <div class="contacto__redes">
+          ${redes.map((red) => `<a href="${red.enlace}" target="_blank" rel="noopener">${iconoRed(red)}${red.nombre}</a>`).join('')}
+        </div>
         <img class="contacto__firma" src="assets/logos/firma.webp" alt="Maritza Rodríguez Fotografía" width="1100" height="384" loading="lazy">
         <p class="contacto__ciudad">${sitio.ciudad}</p>
       </div>`;

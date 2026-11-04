@@ -45,7 +45,7 @@ PLANTILLA = """<!doctype html>
       <h1 class="titular" data-ajustar="0.34">{nombre}</h1>
       <p class="bajada" data-solo-abierta>{bajada}</p>
       <div class="nota-cerrada" data-solo-cerrada>
-        <p>Esta galería se está preparando. Si tu institución necesita fotos de ceremonias, equipos o eventos, escríbele a Maritza.</p>
+        <p>Estoy preparando esta galería. Si tu institución necesita fotos de ceremonias, equipos o eventos, escríbeme.</p>
         <a class="boton" href="https://ig.me/m/maritza._rodriguez" target="_blank" rel="noopener" data-contacto>Escribir por Instagram</a>
       </div>
     </div>
@@ -54,7 +54,7 @@ PLANTILLA = """<!doctype html>
 
   <footer id="cierre"></footer>
 
-  <noscript><p><a href="https://www.instagram.com/maritza._rodriguez/">Ver a Maritza Rodríguez en Instagram</a></p></noscript>
+  <noscript><p><a href="https://www.instagram.com/maritza._rodriguez/">Ver mi trabajo en Instagram</a></p></noscript>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/fotos.js"></script>
   <script src="assets/js/iris.js"></script>
@@ -89,7 +89,7 @@ PAGINAS = (
         "pared": "#0e3a2d",
         "og": "familiares",
         "bajada": "Padres, hijos y hermanos, juntos.",
-        "descripcion": "Sesiones de fotos familiares en Tacna, Perú, con Maritza Rodríguez.",
+        "descripcion": "Sesiones de fotos familiares en Tacna, Perú: padres, hijos y hermanos, juntos.",
     },
     {
         "id": "institucionales",
