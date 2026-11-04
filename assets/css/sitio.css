@@ -451,16 +451,6 @@ p {
   color: #000;
 }
 
-.boton--linea {
-  background: transparent;
-  color: var(--oro-claro);
-}
-
-.boton--linea:hover {
-  background: var(--oro-claro);
-  color: #000;
-}
-
 /* ---------- Portada de categoría ---------- */
 
 /* El titular monta sobre el borde inferior de la foto; aquí se le reserva su parte

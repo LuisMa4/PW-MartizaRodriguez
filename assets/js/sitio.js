@@ -21,7 +21,6 @@
   const pausa = (ms) => new Promise((listo) => setTimeout(listo, ms));
 
   const enlaceInstagram = `https://www.instagram.com/${sitio.instagram}/`;
-  const enlaceMensaje = `https://ig.me/m/${sitio.instagram}`;
 
   /* Las redes van como iconos en la barra superior y con su nombre en el contacto. */
   const redes = [
@@ -39,15 +38,9 @@
 
   const iconoRed = (red) => `<svg viewBox="0 0 24 24" aria-hidden="true">${red.icono}</svg>`;
 
-  function enlaceWhatsapp(salaElegida) {
-    const texto = sitio.mensajeWhatsapp.replace('{sesion}', salaElegida ? salaElegida.sesion : 'de fotos');
-    return `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
-  }
-
-  /* WhatsApp es el contacto principal cuando hay número; sin número, todo va a Instagram. */
-  const contacto = sitio.whatsapp
-    ? { texto: 'Escribir por WhatsApp', enlace: enlaceWhatsapp(sala) }
-    : { texto: 'Escribir por Instagram', enlace: enlaceMensaje };
+  /* Las sesiones se coordinan solo por WhatsApp; las redes son para ver su trabajo. */
+  const mensaje = sitio.mensajeWhatsapp.replace('{sesion}', sala ? sala.sesion : 'de fotos');
+  const enlaceWhatsapp = `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 
   /* ---------- Barras y cierre ---------- */
 
@@ -69,25 +62,20 @@
         </a>
         <div class="barra__acciones">
           ${iconos}
-          <a class="barra__accion" href="${contacto.enlace}" target="_blank" rel="noopener">Coordina tu sesión</a>
+          <a class="barra__accion" href="${enlaceWhatsapp}" target="_blank" rel="noopener">Coordina tu sesión</a>
         </div>
       </header>
       <nav class="salas" aria-label="Categorías">${enlaces}</nav>`
     );
 
     document.querySelectorAll('[data-contacto]').forEach((boton) => {
-      boton.href = contacto.enlace;
-      boton.textContent = contacto.texto;
+      boton.href = enlaceWhatsapp;
     });
   }
 
   function montarCierre() {
     const lugar = document.getElementById('cierre');
     if (!lugar) return;
-
-    const instagram = sitio.whatsapp
-      ? `<a class="boton boton--linea" href="${enlaceMensaje}" target="_blank" rel="noopener">Escribir por Instagram</a>`
-      : '';
 
     let siguiente = '';
     if (sala) {
@@ -103,8 +91,7 @@
         <h2>Coordina tu sesión</h2>
         <p>Cuéntame qué tienes en mente y la fecha que te gustaría.</p>
         <div class="contacto__acciones">
-          <a class="boton" href="${contacto.enlace}" target="_blank" rel="noopener">${contacto.texto}</a>
-          ${instagram}
+          <a class="boton" href="${enlaceWhatsapp}" target="_blank" rel="noopener">Escribir por WhatsApp</a>
         </div>
         <div class="contacto__redes">
           ${redes.map((red) => `<a href="${red.enlace}" target="_blank" rel="noopener">${iconoRed(red)}${red.nombre}</a>`).join('')}
