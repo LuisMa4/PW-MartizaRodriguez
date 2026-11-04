@@ -14,6 +14,10 @@
   const PASO = VUELTA / LAMINAS;
   const FILO = 'rgba(236, 210, 155, 0.6)';
 
+  /* Tope de píxeles del lienzo. Pintar el doble de resolución en pantalla completa
+     baja de 60 a 30 cuadros por segundo, y en movimiento la diferencia no se nota. */
+  const LIMITE_PIXELES = 1920 * 1080;
+
   const suavizar = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
   function aRgb(hex) {
@@ -31,6 +35,9 @@
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');
       this.cuadro = 0;
+      this.terminar = null;
+      this.apertura = 1;
+      this.tinte = '#000000';
       this.medir();
     }
 
@@ -41,7 +48,8 @@
       if (caja.width === this.ancho && caja.height === this.alto) return false;
       this.ancho = caja.width;
       this.alto = caja.height;
-      this.escala = Math.min(window.devicePixelRatio || 1, caja.width < 800 ? 1.5 : 2);
+      const area = Math.max(caja.width * caja.height, 1);
+      this.escala = Math.min(window.devicePixelRatio || 1, 1.5, Math.sqrt(LIMITE_PIXELES / area));
       this.canvas.width = Math.round(caja.width * this.escala);
       this.canvas.height = Math.round(caja.height * this.escala);
       return true;
@@ -50,6 +58,9 @@
     /* apertura: 0 es cerrado y 1 es completamente abierto. */
     pintar(apertura, color, cx = this.ancho / 2, cy = this.alto / 2) {
       const { ctx, ancho, alto, escala } = this;
+      this.apertura = apertura;
+      this.cx = cx;
+      this.cy = cy;
       ctx.setTransform(escala, 0, 0, escala, 0, 0);
       ctx.clearRect(0, 0, ancho, alto);
       if (apertura >= 1) return;
@@ -124,17 +135,22 @@
       ctx.stroke();
     }
 
+    /* Solo corre una animación a la vez. La promesa responde true si llegó al final
+       y false si otra la reemplazó. El color se puede cambiar a medio camino con `tinte`. */
     animar(desde, hasta, duracion, color, cx, cy) {
       this.detener();
+      this.tinte = color;
       return new Promise((listo) => {
+        this.terminar = listo;
         const inicio = performance.now();
         const paso = (ahora) => {
           const t = Math.min((ahora - inicio) / duracion, 1);
-          this.pintar(desde + (hasta - desde) * suavizar(t), color, cx, cy);
+          this.pintar(desde + (hasta - desde) * suavizar(t), this.tinte, cx, cy);
           if (t < 1) {
             this.cuadro = requestAnimationFrame(paso);
           } else {
-            listo();
+            this.terminar = null;
+            listo(true);
           }
         };
         this.cuadro = requestAnimationFrame(paso);
@@ -143,6 +159,8 @@
 
     detener() {
       cancelAnimationFrame(this.cuadro);
+      if (this.terminar) this.terminar(false);
+      this.terminar = null;
     }
   }
 

@@ -9,5 +9,5 @@ window.SITIO = {
 
   // Número con código de país, sin espacios ni el signo +. Ejemplo: '51952123456'.
   whatsapp: '51974212545',
-  mensajeWhatsapp: 'Hola Maritza, vi tu página y quiero coordinar una sesión {sesion}.',
+  mensajeWhatsapp: 'Hola Maritza, vi tu página y quiero coordinar una sesión.',
 };

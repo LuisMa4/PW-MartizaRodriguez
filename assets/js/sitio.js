@@ -1,12 +1,12 @@
-/* Comportamiento del sitio: barras, galerías, visor de fotos y portada con diafragma. */
+/* Comportamiento del sitio: barras, galerías, visor de fotos y animación del diafragma. */
 (function () {
   'use strict';
 
   const SALAS = [
-    { id: 'bodas', nombre: 'Bodas', href: 'bodas.html', pared: '#4c0f22', sesion: 'de boda' },
-    { id: 'quinceaneras', nombre: 'Quinceañeras', href: 'quinceaneras.html', pared: '#45164f', sesion: 'de quinceañera' },
-    { id: 'familiares', nombre: 'Familiares', href: 'familiares.html', pared: '#0e3a2d', sesion: 'familiar' },
-    { id: 'institucionales', nombre: 'Institucionales', href: 'institucionales.html', pared: '#0f2a5c', sesion: 'institucional' },
+    { id: 'bodas', nombre: 'Bodas', href: 'bodas.html', pared: '#4c0f22' },
+    { id: 'quinceaneras', nombre: 'Quinceañeras', href: 'quinceaneras.html', pared: '#45164f' },
+    { id: 'familiares', nombre: 'Familiares', href: 'familiares.html', pared: '#0e3a2d' },
+    { id: 'institucionales', nombre: 'Institucionales', href: 'institucionales.html', pared: '#0f2a5c' },
   ];
 
   const raiz = document.documentElement;
@@ -17,7 +17,6 @@
   const capaIris = document.getElementById('iris');
   const CLAVE_TRANSICION = 'mr-iris';
 
-  const limitar = (valor, minimo, maximo) => Math.min(Math.max(valor, minimo), maximo);
   const pausa = (ms) => new Promise((listo) => setTimeout(listo, ms));
 
   const enlaceInstagram = `https://www.instagram.com/${sitio.instagram}/`;
@@ -39,8 +38,7 @@
   const iconoRed = (red) => `<svg viewBox="0 0 24 24" aria-hidden="true">${red.icono}</svg>`;
 
   /* Las sesiones se coordinan solo por WhatsApp; las redes son para ver su trabajo. */
-  const mensaje = sitio.mensajeWhatsapp.replace('{sesion}', sala ? sala.sesion : 'de fotos');
-  const enlaceWhatsapp = `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+  const enlaceWhatsapp = `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(sitio.mensajeWhatsapp)}`;
 
   /* ---------- Barras y cierre ---------- */
 
@@ -192,7 +190,7 @@
           imagen.style.clipPath = '';
           imagen.animate(
             [{ clipPath: Iris.recorte(cx, cy, 0, 0.9) }, { clipPath: Iris.recorte(cx, cy, radio(caja), 0) }],
-            { duration: 1150, easing: 'cubic-bezier(.7, 0, .2, 1)' }
+            { duration: 750, easing: 'cubic-bezier(.7, 0, .2, 1)' }
           );
         });
       },
@@ -369,10 +367,42 @@
     }
   }
 
-  function colorDestino(url) {
-    const archivo = url.pathname.split('/').pop() || 'index.html';
-    const destino = SALAS.find((item) => item.href === archivo);
-    return destino ? destino.pared : '#000000';
+  const archivoDe = (url) => url.pathname.split('/').pop() || 'index.html';
+  const salaDe = (url) => SALAS.find((item) => item.href === archivoDe(url));
+
+  /* Abrir y cerrar comparten un solo diafragma. Si llegan más clics mientras se
+     cierra, solo cambia el destino: gana el último y se navega una sola vez. */
+  let cortina = null;
+  let salida = null;
+
+  function prepararCortina() {
+    capaIris.hidden = false;
+    capaIris.style.animation = 'none';
+    capaIris.style.background = 'transparent';
+    if (cortina) cortina.medir();
+    else cortina = new Iris(capaIris);
+    return cortina;
+  }
+
+  function salirHacia(destino, x, y) {
+    const elegida = salaDe(destino);
+    const color = elegida ? elegida.pared : '#000000';
+    const enCamino = Boolean(salida);
+    const iris = enCamino ? cortina : prepararCortina();
+
+    /* Si el diafragma ya se está moviendo, sigue desde donde está y no salta. */
+    const enMovimiento = iris.apertura < 1;
+    const cx = enMovimiento ? iris.cx : x;
+    const cy = enMovimiento ? iris.cy : y;
+
+    salida = destino.href;
+    iris.tinte = color;
+    guardarTransicion({ x: cx / innerWidth, y: cy / innerHeight, color });
+    if (enCamino) return;
+
+    iris.animar(iris.apertura, 0, 160 + 300 * iris.apertura, color, cx, cy).then((terminado) => {
+      if (terminado) window.location.href = salida;
+    });
   }
 
   function interceptarEnlaces() {
@@ -385,21 +415,50 @@
 
       evento.preventDefault();
       const destino = new URL(enlace.href);
-      const x = evento.detail ? evento.clientX : innerWidth / 2;
-      const y = evento.detail ? evento.clientY : innerHeight / 2;
-      const color = colorDestino(destino);
-      guardarTransicion({ x: x / innerWidth, y: y / innerHeight, color });
-
-      capaIris.hidden = false;
-      capaIris.style.animation = 'none';
-      capaIris.style.background = 'transparent';
-      new Iris(capaIris).animar(1, 0, 640, color, x, y).then(() => {
-        window.location.href = enlace.href;
-      });
+      if (archivoDe(destino) === archivoDe(window.location)) {
+        window.scrollTo({ top: 0 });
+        return;
+      }
+      salirHacia(
+        destino,
+        evento.detail ? evento.clientX : innerWidth / 2,
+        evento.detail ? evento.clientY : innerHeight / 2
+      );
     });
 
+    /* Al volver con el botón Atrás, el navegador restaura la página tal como quedó. */
     window.addEventListener('pageshow', (evento) => {
-      if (evento.persisted) capaIris.hidden = true;
+      if (!evento.persisted) return;
+      salida = null;
+      if (cortina) {
+        cortina.detener();
+        cortina.apertura = 1;
+      }
+      capaIris.hidden = true;
+    });
+  }
+
+  /* Al acercarse a un enlace se adelanta la página y su portada, para que el
+     diafragma no tenga que quedarse cerrado esperando la carga. */
+  function anticiparPaginas() {
+    const vistas = new Set();
+
+    function anticipar(evento) {
+      const enlace = evento.target.closest && evento.target.closest('a[href$=".html"]');
+      if (!enlace || vistas.has(enlace.href)) return;
+      vistas.add(enlace.href);
+      document.head.insertAdjacentHTML('beforeend', `<link rel="prefetch" href="${enlace.href}">`);
+
+      const elegida = salaDe(new URL(enlace.href));
+      const portada = elegida && fotos.portadas[elegida.id];
+      if (!portada) return;
+      const imagen = new Image();
+      imagen.sizes = '100vw';
+      imagen.srcset = fuentes(matchMedia('(orientation: portrait)').matches ? portada.v : portada.h);
+    }
+
+    ['pointerover', 'focusin', 'touchstart'].forEach((tipo) => {
+      document.addEventListener(tipo, anticipar, { passive: true });
     });
   }
 
@@ -420,17 +479,16 @@
       return;
     }
 
-    capaIris.style.background = 'transparent';
-    const iris = new Iris(capaIris);
+    const iris = prepararCortina();
     const color = sala ? sala.pared : (transicion && transicion.color) || '#000000';
     const cx = (transicion ? transicion.x : 0.5) * iris.ancho;
     const cy = (transicion ? transicion.y : 0.5) * iris.alto;
     iris.pintar(0, color, cx, cy);
 
-    esperarImagen(document.querySelector('.portada .fondo, .escena.activa .fondo'), 1400)
-      .then(() => iris.animar(0, 1, 1200, color, cx, cy))
-      .then(() => {
-        capaIris.hidden = true;
+    esperarImagen(document.querySelector('.portada .fondo, .escena.activa .fondo'), 900)
+      .then(() => (salida ? false : iris.animar(0, 1, 800, color, cx, cy)))
+      .then((terminado) => {
+        if (terminado) capaIris.hidden = true;
       });
   }
 
@@ -457,171 +515,215 @@
     });
   }
 
-  /* ---------- Portada principal ---------- */
+  /* ---------- Animación del inicio ---------- */
 
-  function montarEscenario(transicion) {
-    const escenario = document.getElementById('escenario');
-    if (!escenario) return;
+  /* Las escenas pasan solas con el diafragma y el desplazamiento de la página queda
+     libre. El tiempo de cada escena lo lleva la animación CSS de su marca de avance:
+     así pausar es detener esa animación y no hay temporizadores que coordinar. */
+  function montarVitrina(transicion) {
+    const vitrina = document.getElementById('vitrina');
+    if (!vitrina) return;
 
-    const escenas = [...escenario.querySelectorAll('.escena')];
-    escenas.forEach((escena) => {
-      const id = escena.dataset.sala || 'inicio';
-      if (fotos.portadas[id]) {
-        escena.classList.remove('escena--cerrada');
-        escena.insertAdjacentHTML('afterbegin', htmlPortada(fotos.portadas[id]));
-      }
+    /* Una categoría sin fotos entra sola a la animación cuando las tenga. */
+    vitrina.querySelectorAll('.escena[data-sala]').forEach((escena) => {
+      if (salaCerrada(escena.dataset.sala)) escena.remove();
     });
 
-    if (!conIris) {
-      escenas.forEach((escena) => escena.classList.add('activa'));
+    const escenas = [...vitrina.querySelectorAll('.escena')];
+    const idDe = (escena) => escena.dataset.sala || 'inicio';
+
+    function cargar(escena) {
+      if (!escena.querySelector('.fondo')) {
+        escena.insertAdjacentHTML('afterbegin', htmlPortada(fotos.portadas[idDe(escena)]));
+      }
+      return escena.querySelector('.fondo');
+    }
+
+    const primera = cargar(escenas[0]);
+    if (!conIris) return;
+
+    const salaDeEscena = (escena) => SALAS.find((item) => item.id === idDe(escena));
+    const paredes = escenas.map((escena) => (salaDeEscena(escena) ? salaDeEscena(escena).pared : '#000000'));
+
+    vitrina.insertAdjacentHTML(
+      'beforeend',
+      `<div class="vitrina__controles">
+        <div class="vitrina__marcas">
+          ${escenas
+            .map((escena) => {
+              const elegida = salaDeEscena(escena);
+              return `<button type="button" aria-label="Ver ${elegida ? elegida.nombre : 'la portada'}"><span><i></i></span></button>`;
+            })
+            .join('')}
+        </div>
+        <button class="vitrina__pausa" type="button" aria-label="Pausar la animación">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path class="icono-pausar" d="M9 6v12M15 6v12"/>
+            <path class="icono-seguir" d="M8 5.5l10.5 6.5L8 18.5z"/>
+          </svg>
+        </button>
+      </div>`
+    );
+
+    const iris = new Iris(vitrina.querySelector('.iris-escena'));
+    const marcas = [...vitrina.querySelectorAll('.vitrina__marcas button')];
+    const botonPausa = vitrina.querySelector('.vitrina__pausa');
+    const enlaces = [...document.querySelectorAll('[data-sala-enlace]')];
+    const centro = () => [iris.ancho / 2, iris.alto * 0.44];
+
+    let actual = 0;
+    let destino = 0;
+    let cerrando = false;
+    let enPausa = false;
+    let fuera = false;
+    let conFoco = false;
+
+    /* El menú sigue a la escena solo mientras la animación está a la vista. */
+    function marcarEnlace() {
+      enlaces.forEach((enlace) => {
+        enlace.classList.toggle('activo', !fuera && enlace.dataset.salaEnlace === idDe(escenas[actual]));
+      });
+    }
+
+    function mostrar(posicion) {
+      escenas[actual].classList.remove('activa');
+      escenas[posicion].classList.add('activa');
+      actual = posicion;
+      marcarEnlace();
+      marcas.forEach((marca, indice) => {
+        marca.classList.remove('llenando');
+        marca.classList.toggle('vista', indice < posicion);
+        if (indice === posicion) marca.setAttribute('aria-current', 'true');
+        else marca.removeAttribute('aria-current');
+      });
+    }
+
+    function esperarEnEscena() {
+      marcas[actual].classList.add('llenando');
+      cargar(escenas[(actual + 1) % escenas.length]);
+    }
+
+    /* Como en las transiciones entre páginas, gana el último pedido. */
+    function cambiarA(posicion) {
+      destino = posicion;
+      if (cerrando) return;
+      cerrando = true;
+      marcas[actual].classList.replace('llenando', 'vista');
+
+      const [cx, cy] = centro();
+      esperarImagen(cargar(escenas[posicion]), 1500)
+        .then(() => iris.animar(iris.apertura, 0, 240 + 520 * iris.apertura, paredes[destino], cx, cy))
+        .then(() => esperarImagen(cargar(escenas[destino]), 1500))
+        .then(() => {
+          cerrando = false;
+          mostrar(destino);
+          return iris.animar(0, 1, 950, paredes[actual], cx, cy);
+        })
+        .then((terminado) => {
+          if (terminado) esperarEnEscena();
+        });
+    }
+
+    function actualizarPausa() {
+      vitrina.classList.toggle('quieta', enPausa || fuera || conFoco || document.hidden);
+    }
+
+    vitrina.querySelector('.vitrina__marcas').addEventListener('animationend', () => {
+      cambiarA((actual + 1) % escenas.length);
+    });
+
+    marcas.forEach((marca, posicion) => {
+      marca.addEventListener('click', () => {
+        if (posicion !== actual || cerrando) cambiarA(posicion);
+      });
+    });
+
+    botonPausa.addEventListener('click', () => {
+      enPausa = !enPausa;
+      botonPausa.classList.toggle('en-pausa', enPausa);
+      botonPausa.setAttribute('aria-label', enPausa ? 'Seguir la animación' : 'Pausar la animación');
+      actualizarPausa();
+    });
+
+    /* Con el teclado, la escena no cambia mientras se está en uno de sus enlaces. */
+    vitrina.addEventListener('focusin', (evento) => {
+      conFoco = evento.target.matches(':focus-visible');
+      actualizarPausa();
+    });
+    vitrina.addEventListener('focusout', () => {
+      conFoco = false;
+      actualizarPausa();
+    });
+
+    /* Fuera de la vista no hace falta animar nada. */
+    document.addEventListener('visibilitychange', actualizarPausa);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([entrada]) => {
+          fuera = !entrada.isIntersecting;
+          marcarEnlace();
+          actualizarPausa();
+        },
+        { threshold: 0.3 }
+      ).observe(vitrina);
+    }
+
+    window.addEventListener('resize', () => {
+      if (!iris.medir()) return;
+      const [cx, cy] = centro();
+      iris.pintar(iris.apertura, paredes[destino], cx, cy);
+    });
+
+    mostrar(0);
+
+    if (transicion) {
+      esperarEnEscena();
       return;
     }
 
-    const fijo = escenario.querySelector('.escenario__fijo');
-    const lienzo = escenario.querySelector('.iris-escena');
-    const iris = new Iris(lienzo);
-    const CENTRO_Y = 0.44;
+    raiz.classList.add('intro');
+    const [cx, cy] = centro();
+    iris.pintar(0, '#000000', cx, cy);
+    esperarImagen(primera, 1800)
+      .then(() => pausa(450))
+      .then(() => iris.animar(0, 1, 1500, '#000000', cx, cy))
+      .then(() => {
+        raiz.classList.remove('intro');
+        esperarEnEscena();
+      });
+  }
 
-    const paredes = escenas.map((escena) => {
-      const elegida = SALAS.find((item) => item.id === escena.dataset.sala);
-      return elegida ? elegida.pared : '#000000';
-    });
-    const techos = escenas.map((escena) => (escena.classList.contains('escena--cerrada') ? 0.24 : 1));
+  /* ---------- Categorías del inicio ---------- */
 
-    /* Lo que debe verse por encima de las láminas se mueve sobre el canvas. */
-    const sobrepuestos = [];
-    escenas.forEach((escena, posicion) => {
-      if (escena.classList.contains('escena--cerrada')) {
-        escena.querySelectorAll('.escena__texto').forEach((texto) => texto.setAttribute('data-sobre', ''));
+  function montarCategorias() {
+    const lugar = document.getElementById('categorias-lista');
+    if (!lugar) return;
+
+    lugar.innerHTML = SALAS.map((item) => {
+      const portada = fotos.portadas[item.id];
+      if (!portada) {
+        return `<a class="tarjeta tarjeta--cerrada" href="${item.href}" style="--pared-tarjeta:${item.pared}">
+          <canvas aria-hidden="true" data-pared="${item.pared}"></canvas>
+          <span class="lente-m"><img src="assets/logos/monograma.webp" alt="" width="300" height="240" loading="lazy"></span>
+          <strong>${item.nombre}</strong>
+        </a>`;
       }
-      escena.querySelectorAll('[data-sobre]').forEach((elemento) => {
-        elemento.classList.add('sobre');
-        fijo.append(elemento);
-        sobrepuestos.push({ elemento, posicion });
+      const foto = portada.v;
+      return `<a class="tarjeta" href="${item.href}" style="--pared-tarjeta:${item.pared}">
+        <img src="${foto.src}-${foto.lados[0]}.webp" srcset="${fuentes(foto)}" sizes="(min-width: 1000px) 25vw, 50vw"
+          alt="" loading="lazy" decoding="async">
+        <strong>${item.nombre}</strong>
+      </a>`;
+    }).join('');
+
+    lugar.querySelectorAll('canvas').forEach((lienzo) => {
+      const iris = new Iris(lienzo);
+      const dibujar = () => iris.pintar(0.32, lienzo.dataset.pared, iris.ancho / 2, iris.alto * 0.44);
+      dibujar();
+      window.addEventListener('resize', () => {
+        if (iris.medir()) dibujar();
       });
     });
-
-    const enlacesSalas = [...document.querySelectorAll('[data-sala-enlace]')];
-    let visible = -1;
-    let enIntro = false;
-    let pedido = false;
-
-    function mostrar(posicion) {
-      if (posicion === visible) return;
-      if (visible >= 0) escenas[visible].classList.remove('activa');
-      escenas[posicion].classList.add('activa');
-      visible = posicion;
-      const id = escenas[posicion].dataset.sala;
-      enlacesSalas.forEach((enlace) => {
-        enlace.classList.toggle('activo', enlace.dataset.salaEnlace === id);
-      });
-    }
-
-    function actualizar() {
-      pedido = false;
-      if (enIntro) return;
-      const alto = fijo.offsetHeight || window.innerHeight || 1;
-      const ultimo = escenas.length - 1;
-      const progreso = limitar((window.scrollY - escenario.offsetTop) / alto, 0, ultimo);
-      const tramo = Math.min(Math.floor(progreso), ultimo - 1);
-      const avance = progreso - tramo;
-      const cercana = avance < 0.5 ? tramo : tramo + 1;
-      const abierto = Math.abs(1 - 2 * avance);
-
-      mostrar(cercana);
-      iris.pintar(Math.pow(abierto, 1.5) * techos[cercana], paredes[tramo + 1], iris.ancho / 2, iris.alto * CENTRO_Y);
-
-      sobrepuestos.forEach(({ elemento, posicion }) => {
-        const activo = posicion === cercana;
-        elemento.style.opacity = activo ? limitar((abierto - 0.45) / 0.45, 0, 1) : 0;
-        elemento.style.visibility = activo ? 'visible' : 'hidden';
-      });
-    }
-
-    function pedirActualizacion() {
-      if (pedido) return;
-      pedido = true;
-      requestAnimationFrame(actualizar);
-    }
-
-    function cancelarIntro() {
-      if (!enIntro) return;
-      enIntro = false;
-      iris.detener();
-      raiz.classList.remove('intro');
-      pedirActualizacion();
-    }
-
-    function ajustarLienzo() {
-      const cambio = iris.medir();
-      if (cambio && enIntro) iris.pintar(0, '#000000', iris.ancho / 2, iris.alto * CENTRO_Y);
-      pedirActualizacion();
-    }
-
-    /* Al dejar de desplazarse, la página sigue hasta la parada siguiente en esa
-       dirección. Se hace aquí y no con scroll-snap porque el anclaje del navegador
-       devuelve a la parada anterior los giros cortos de la rueda del ratón. */
-    let ultimaY = window.scrollY;
-    let direccion = 1;
-    let tocando = false;
-    let espera = 0;
-
-    function asentar() {
-      if (tocando || enIntro) return;
-      const alto = fijo.offsetHeight || window.innerHeight;
-      const posicion = (window.scrollY - escenario.offsetTop) / alto;
-      if (posicion <= 0 || posicion >= escenas.length) return;
-      if (Math.abs(posicion - Math.round(posicion)) < 0.004) return;
-      const parada = direccion > 0 ? Math.ceil(posicion) : Math.floor(posicion);
-      window.scrollTo({ top: escenario.offsetTop + parada * alto, behavior: 'smooth' });
-    }
-
-    function programarAsiento() {
-      clearTimeout(espera);
-      espera = setTimeout(asentar, 130);
-    }
-
-    window.addEventListener('scroll', () => {
-      if (enIntro && window.scrollY > 4) cancelarIntro();
-      const y = window.scrollY;
-      if (y !== ultimaY) direccion = y > ultimaY ? 1 : -1;
-      ultimaY = y;
-      pedirActualizacion();
-      programarAsiento();
-    }, { passive: true });
-    window.addEventListener('touchstart', () => {
-      tocando = true;
-    }, { passive: true });
-    window.addEventListener('touchend', () => {
-      tocando = false;
-      programarAsiento();
-    }, { passive: true });
-    window.addEventListener('resize', ajustarLienzo);
-
-    const flecha = document.querySelector('.desliza');
-    if (flecha) {
-      flecha.addEventListener('click', () => {
-        window.scrollTo({ top: fijo.offsetHeight, behavior: 'smooth' });
-      });
-    }
-
-    mostrar(0);
-    actualizar();
-
-    if (window.scrollY < 5 && !transicion) {
-      enIntro = true;
-      raiz.classList.add('intro');
-      iris.pintar(0, '#000000', iris.ancho / 2, iris.alto * CENTRO_Y);
-      esperarImagen(escenas[0].querySelector('.fondo'), 1800)
-        .then(() => pausa(750))
-        .then(() => (enIntro ? iris.animar(0, 1, 1900, '#000000', iris.ancho / 2, iris.alto * CENTRO_Y) : null))
-        .then(() => {
-          if (!enIntro) return;
-          enIntro = false;
-          raiz.classList.remove('intro');
-          actualizar();
-        });
-    }
   }
 
   /* ---------- Arranque ---------- */
@@ -631,11 +733,13 @@
   montarBarras();
   montarCierre();
   montarPortadaDeSala();
-  montarEscenario(transicion);
+  montarVitrina(transicion);
+  montarCategorias();
   const lista = montarGaleria();
   montarVisor(lista);
   revelarFotosGrandes();
   interceptarEnlaces();
+  anticiparPaginas();
   ajustarTitulares();
   abrirPagina(transicion);
 

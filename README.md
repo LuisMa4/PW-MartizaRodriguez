@@ -14,7 +14,7 @@ Luego abre <http://localhost:5180>.
 
 ## Cambiar los datos de contacto
 
-Todo está en `assets/js/config.js`: Instagram, Facebook, ciudad y WhatsApp. Las sesiones se coordinan solo por WhatsApp, con un mensaje ya escrito según la categoría. Instagram es un enlace al perfil. El enlace de Facebook aparece solo cuando se escribe su dirección; hoy está vacío porque el perfil no se ve sin iniciar sesión en Facebook. Si cambia el número, cámbialo también en `telephone`, dentro de `index.html`.
+Todo está en `assets/js/config.js`: Instagram, Facebook, ciudad y WhatsApp. Las sesiones se coordinan solo por WhatsApp, con el mensaje ya escrito que está en ese archivo. Instagram es un enlace al perfil. El enlace de Facebook aparece solo cuando se escribe su dirección; hoy está vacío porque el perfil no se ve sin iniciar sesión en Facebook. Si cambia el número, cámbialo también en `telephone`, dentro de `index.html`.
 
 ## Agregar o cambiar fotos
 
@@ -40,13 +40,15 @@ Hoy muestra el lente casi cerrado porque todavía no tiene fotos. En `scripts/fo
 
 3. Ejecuta `python scripts/preparar_fotos.py`.
 
-El lente se abre solo, tanto en la página de la categoría como en el inicio.
+El lente se abre solo en la página de la categoría y en su tarjeta del inicio, y la categoría entra sola a la animación del inicio.
 
 ## Cambiar el texto de las páginas
 
-El inicio se edita directamente en `index.html`. Las cuatro páginas de categoría salen de una plantilla: edita `scripts/crear_paginas.py` y ejecútalo con `python scripts/crear_paginas.py`.
+El inicio se edita directamente en `index.html`. Para cambiar cuánto dura cada escena de su animación, edita `--espera` en `assets/css/sitio.css`. Las cuatro páginas de categoría salen de una plantilla: edita `scripts/crear_paginas.py` y ejecútalo con `python scripts/crear_paginas.py`.
 
 ## Publicar
+
+Si cambias un archivo CSS o JS, sube el número `?v=` con el que se cargan en `index.html` y en `scripts/crear_paginas.py`, y ejecuta ese script. Así nadie se queda con la versión anterior guardada en su navegador.
 
 Funciona en GitHub Pages tal como está, igual que los álbumes; el archivo `.nojekyll` ya está incluido. La dirección es <https://luisma4.github.io/PW-MartizaRodriguez/>.
 

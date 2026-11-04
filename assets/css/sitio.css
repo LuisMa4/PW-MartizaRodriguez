@@ -39,6 +39,12 @@ html.visor-abierto {
   overflow: hidden;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   margin: 0;
   background: var(--pared);
@@ -224,44 +230,27 @@ p {
   background: var(--oro-claro);
 }
 
-/* ---------- Escenario de inicio ---------- */
+/* ---------- Animación del inicio ---------- */
 
-.escenario {
+.vitrina {
+  --espera: 5s;
   position: relative;
-}
-
-.con-iris .escenario {
-  height: calc(var(--n) * 100svh);
-}
-
-.con-iris .escenario__fijo {
-  position: sticky;
-  top: 0;
+  isolation: isolate;
   height: 100svh;
   overflow: hidden;
   background: #000;
 }
 
 .escena {
-  position: relative;
-  min-height: 100svh;
-  overflow: hidden;
-  background: #000;
-}
-
-.con-iris .escena {
   position: absolute;
   inset: 0;
-  min-height: 0;
+  overflow: hidden;
+  background: #000;
   visibility: hidden;
 }
 
-.con-iris .escena.activa {
+.escena.activa {
   visibility: visible;
-}
-
-.escena[data-sala='institucionales'] {
-  background: var(--zafiro);
 }
 
 .escena .fondo {
@@ -272,7 +261,7 @@ p {
   object-fit: cover;
 }
 
-.escena:not(.escena--cerrada)::after {
+.escena::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -298,20 +287,12 @@ p {
   display: block;
 }
 
-.sobre {
-  z-index: 3;
-}
-
 .escena__texto {
   position: absolute;
   z-index: 1;
   left: var(--margen);
   right: var(--margen);
-  bottom: calc(var(--alto-salas) + clamp(18px, 4vh, 44px));
-}
-
-.escena__texto.sobre {
-  z-index: 3;
+  bottom: calc(var(--alto-salas) + 56px);
 }
 
 .escena__titulo {
@@ -340,6 +321,7 @@ p {
 
 .escena__marca {
   position: absolute;
+  z-index: 1;
   top: 25%;
   left: 50%;
   width: min(80vw, 54vh, 560px);
@@ -360,12 +342,10 @@ p {
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.65);
 }
 
+/* En la entrada, la firma aparece sobre el lente cerrado. */
 .intro .escena__marca {
-  animation: aparecer 1s ease 0.1s both;
-}
-
-.intro .desliza {
-  animation: aparecer 0.8s ease 2.6s both;
+  z-index: 3;
+  animation: aparecer 0.8s ease 0.1s both;
 }
 
 @keyframes aparecer {
@@ -375,20 +355,19 @@ p {
 
 .desliza {
   position: absolute;
+  z-index: 1;
   left: 50%;
-  bottom: calc(var(--alto-salas) + 18px);
+  bottom: calc(var(--alto-salas) + 52px);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
   padding: 6px 12px;
-  border: 0;
-  background: none;
   color: var(--marfil);
-  font: 400 16px/1.3 var(--texto);
+  font-size: 16px;
+  line-height: 1.3;
   text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
   white-space: nowrap;
-  cursor: pointer;
   transform: translateX(-50%);
 }
 
@@ -400,12 +379,116 @@ p {
   stroke-width: 1.4;
 }
 
-.no-iris-oculto {
+/* Avance de las escenas: una línea por escena, como las historias de Instagram. */
+.vitrina__controles {
+  position: absolute;
+  z-index: 3;
+  left: var(--margen);
+  right: var(--margen);
+  bottom: calc(var(--alto-salas) + 8px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity 0.5s ease;
+}
+
+.intro .vitrina__controles {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vitrina__marcas {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.vitrina__marcas button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.vitrina__marcas span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(251, 244, 231, 0.36);
+  transition: height 0.15s ease;
+}
+
+.vitrina__marcas button:hover span {
+  height: 4px;
+}
+
+.vitrina__marcas i {
+  display: block;
+  height: 100%;
+  background: var(--oro-claro);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.vitrina__marcas .vista i {
+  transform: scaleX(1);
+}
+
+.vitrina__marcas .llenando i {
+  animation: llenar var(--espera) linear forwards;
+}
+
+.vitrina.quieta .llenando i {
+  animation-play-state: paused;
+}
+
+@keyframes llenar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.vitrina__pausa {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(236, 210, 155, 0.5);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  color: var(--oro-claro);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.vitrina__pausa:hover {
+  background: var(--oro-claro);
+  color: #000;
+}
+
+.vitrina__pausa svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icono-seguir,
+.vitrina__pausa.en-pausa .icono-pausar {
   display: none;
 }
 
-.con-iris .no-iris-oculto {
-  display: flex;
+.vitrina__pausa.en-pausa .icono-seguir {
+  display: block;
 }
 
 /* El lente casi cerrado con la M en el centro */
@@ -421,6 +504,75 @@ p {
 .lente-m img {
   width: 100%;
   height: auto;
+}
+
+/* ---------- Categorías del inicio ---------- */
+
+.categorias {
+  padding: clamp(84px, 13vh, 128px) var(--margen) clamp(48px, 9vh, 96px);
+  background: #000;
+}
+
+.categorias__titulo {
+  margin-bottom: clamp(18px, 3vw, 36px);
+  font: italic 500 clamp(36px, 7vw, 84px) / 1.04 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+.categorias__lista {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--junta);
+}
+
+.tarjeta {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--pared-tarjeta);
+}
+
+.tarjeta > img,
+.tarjeta > canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tarjeta > img {
+  object-fit: cover;
+  transition: transform 0.7s var(--curva);
+}
+
+.tarjeta:not(.tarjeta--cerrada)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0) 46%);
+}
+
+.tarjeta strong {
+  position: absolute;
+  z-index: 1;
+  left: clamp(10px, 1.4vw, 20px);
+  right: clamp(10px, 1.4vw, 20px);
+  bottom: clamp(8px, 1.2vw, 18px);
+  font: italic 500 clamp(20px, 6vw, 46px) / 1.1 var(--display);
+  font-optical-sizing: auto;
+  transition: color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .tarjeta:hover > img {
+    transform: scale(1.04);
+  }
+
+  .tarjeta:hover strong {
+    color: var(--oro-claro);
+  }
 }
 
 /* ---------- Botones ---------- */
@@ -769,6 +921,50 @@ p {
 }
 
 /* ---------- Ajustes de tamaño ---------- */
+
+/* En computadora las categorías pasan a la barra superior; en el celular siguen
+   abajo, al alcance del pulgar. */
+@media (min-width: 1000px) {
+  :root {
+    --alto-salas: 0px;
+  }
+
+  .barra {
+    padding-bottom: 34px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+  }
+
+  .salas {
+    inset: 0 auto auto 50%;
+    gap: clamp(20px, 2.6vw, 40px);
+    min-height: 0;
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    font-size: 16px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+    transform: translateX(-50%);
+  }
+
+  .salas a {
+    height: 70px;
+    color: var(--marfil);
+  }
+
+  .salas a[aria-current='page']::after,
+  .salas a.activo::after {
+    bottom: 18px;
+  }
+
+  .categorias__lista {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tarjeta strong {
+    font-size: clamp(26px, 2.9vw, 46px);
+  }
+}
 
 @media (max-width: 699px) {
   body {
