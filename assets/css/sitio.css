@@ -216,13 +216,11 @@ p {
 }
 
 .salas a:hover,
-.salas a[aria-current='page'],
-.salas a.activo {
+.salas a[aria-current='page'] {
   color: var(--oro-claro);
 }
 
-.salas a[aria-current='page']::after,
-.salas a.activo::after {
+.salas a[aria-current='page']::after {
   content: '';
   position: absolute;
   inset: auto 0 11px;
@@ -233,7 +231,7 @@ p {
 /* ---------- Animación del inicio ---------- */
 
 .vitrina {
-  --espera: 5s;
+  --espera: 3.5s;
   position: relative;
   isolation: isolate;
   height: 100svh;
@@ -952,8 +950,7 @@ p {
     color: var(--marfil);
   }
 
-  .salas a[aria-current='page']::after,
-  .salas a.activo::after {
+  .salas a[aria-current='page']::after {
     bottom: 18px;
   }
 

@@ -568,7 +568,6 @@
     const iris = new Iris(vitrina.querySelector('.iris-escena'));
     const marcas = [...vitrina.querySelectorAll('.vitrina__marcas button')];
     const botonPausa = vitrina.querySelector('.vitrina__pausa');
-    const enlaces = [...document.querySelectorAll('[data-sala-enlace]')];
     const centro = () => [iris.ancho / 2, iris.alto * 0.44];
 
     let actual = 0;
@@ -578,18 +577,10 @@
     let fuera = false;
     let conFoco = false;
 
-    /* El menú sigue a la escena solo mientras la animación está a la vista. */
-    function marcarEnlace() {
-      enlaces.forEach((enlace) => {
-        enlace.classList.toggle('activo', !fuera && enlace.dataset.salaEnlace === idDe(escenas[actual]));
-      });
-    }
-
     function mostrar(posicion) {
       escenas[actual].classList.remove('activa');
       escenas[posicion].classList.add('activa');
       actual = posicion;
-      marcarEnlace();
       marcas.forEach((marca, indice) => {
         marca.classList.remove('llenando');
         marca.classList.toggle('vista', indice < posicion);
@@ -661,7 +652,6 @@
       new IntersectionObserver(
         ([entrada]) => {
           fuera = !entrada.isIntersecting;
-          marcarEnlace();
           actualizarPausa();
         },
         { threshold: 0.3 }
