@@ -14,7 +14,7 @@ Luego abre <http://localhost:5180>.
 
 ## Cambiar los datos de contacto
 
-Todo está en `assets/js/config.js`: Instagram, ciudad y WhatsApp. El botón de WhatsApp aparece solo cuando se escribe un número.
+Todo está en `assets/js/config.js`: Instagram, ciudad y WhatsApp. Con número, WhatsApp es el contacto principal y lleva un mensaje ya escrito según la categoría. Si se deja vacío, todo va a Instagram. Si cambia el número, cámbialo también en `telephone`, dentro de `index.html`.
 
 ## Agregar o cambiar fotos
 

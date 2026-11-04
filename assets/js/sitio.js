@@ -28,6 +28,11 @@
     return `https://wa.me/${sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
   }
 
+  /* WhatsApp es el contacto principal cuando hay número; sin número, todo va a Instagram. */
+  const contacto = sitio.whatsapp
+    ? { texto: 'Escribir por WhatsApp', enlace: enlaceWhatsapp(sala) }
+    : { texto: 'Escribir por Instagram', enlace: enlaceMensaje };
+
   /* ---------- Barras y cierre ---------- */
 
   function montarBarras() {
@@ -42,18 +47,23 @@
         <a class="barra__marca" href="index.html" aria-label="Maritza Rodríguez Fotografía, inicio">
           <img src="assets/logos/monograma.webp" alt="" width="300" height="240">
         </a>
-        <a class="barra__accion" href="${enlaceMensaje}" target="_blank" rel="noopener">Coordina tu sesión</a>
+        <a class="barra__accion" href="${contacto.enlace}" target="_blank" rel="noopener">Coordina tu sesión</a>
       </header>
       <nav class="salas" aria-label="Categorías">${enlaces}</nav>`
     );
+
+    document.querySelectorAll('[data-contacto]').forEach((boton) => {
+      boton.href = contacto.enlace;
+      boton.textContent = contacto.texto;
+    });
   }
 
   function montarCierre() {
     const lugar = document.getElementById('cierre');
     if (!lugar) return;
 
-    const whatsapp = sitio.whatsapp
-      ? `<a class="boton boton--linea" href="${enlaceWhatsapp(sala)}" target="_blank" rel="noopener">Escribir por WhatsApp</a>`
+    const instagram = sitio.whatsapp
+      ? `<a class="boton boton--linea" href="${enlaceMensaje}" target="_blank" rel="noopener">Escribir por Instagram</a>`
       : '';
 
     let siguiente = '';
@@ -70,8 +80,8 @@
         <h2>Coordina tu sesión</h2>
         <p>Cuéntale a Maritza qué tienes en mente y la fecha que te gustaría.</p>
         <div class="contacto__acciones">
-          <a class="boton" href="${enlaceMensaje}" target="_blank" rel="noopener">Escribir por Instagram</a>
-          ${whatsapp}
+          <a class="boton" href="${contacto.enlace}" target="_blank" rel="noopener">${contacto.texto}</a>
+          ${instagram}
         </div>
         <a class="contacto__usuario" href="${enlaceInstagram}" target="_blank" rel="noopener">@${sitio.instagram}</a>
         <img class="contacto__firma" src="assets/logos/firma.webp" alt="Maritza Rodríguez Fotografía" width="1100" height="384" loading="lazy">

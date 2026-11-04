@@ -4,7 +4,7 @@ window.SITIO = {
   instagram: 'maritza._rodriguez',
 
   // Número con código de país, sin espacios ni el signo +. Ejemplo: '51952123456'.
-  // Mientras esté vacío, el botón de WhatsApp no aparece y todo se coordina por Instagram.
-  whatsapp: '',
+  // Con número, WhatsApp es el contacto principal. Vacío, todo se coordina por Instagram.
+  whatsapp: '51974212545',
   mensajeWhatsapp: 'Hola Maritza, vi tu página y quiero coordinar una sesión {sesion}.',
 };
