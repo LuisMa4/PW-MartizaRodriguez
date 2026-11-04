@@ -3,8 +3,9 @@ window.SITIO = {
   ciudad: 'Tacna, Perú',
   instagram: 'maritza._rodriguez',
 
-  // Lo que va después de facebook.com/ en la dirección del perfil. Vacío = sin enlace de Facebook.
-  facebook: 'maritza.rodriguez.16568',
+  // Lo que va después de facebook.com/ en la dirección de la página. Vacío = sin enlace de Facebook.
+  // Usa una dirección que se vea sin iniciar sesión en Facebook.
+  facebook: '',
 
   // Número con código de país, sin espacios ni el signo +. Ejemplo: '51952123456'.
   whatsapp: '51974212545',
