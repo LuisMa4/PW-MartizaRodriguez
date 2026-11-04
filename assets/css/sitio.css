@@ -1,0 +1,783 @@
+:root {
+  --oro: #c89838;
+  --oro-claro: #ecd29b;
+  --marfil: #fbf4e7;
+  --rubi: #4c0f22;
+  --amatista: #45164f;
+  --esmeralda: #0e3a2d;
+  --zafiro: #0f2a5c;
+  --pared: #000;
+
+  --margen: clamp(16px, 3.2vw, 44px);
+  --junta: clamp(4px, 0.7vw, 10px);
+  --alto-salas: 52px;
+
+  --display: 'Bodoni Moda', Didot, 'Bodoni MT', Georgia, serif;
+  --texto: 'Jost', 'Century Gothic', Futura, system-ui, sans-serif;
+  --curva: cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+html[data-sala='bodas'] { --pared: var(--rubi); }
+html[data-sala='quinceaneras'] { --pared: var(--amatista); }
+html[data-sala='familiares'] { --pared: var(--esmeralda); }
+html[data-sala='institucionales'] { --pared: var(--zafiro); }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--pared);
+  color: var(--marfil);
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.visor-abierto {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--pared);
+  font: 400 17px/1.55 var(--texto);
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--oro-claro);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--oro);
+  color: #000;
+}
+
+/* ---------- Diafragma de transición ---------- */
+
+#iris {
+  display: none;
+}
+
+.con-iris #iris {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  background: var(--pared);
+  pointer-events: none;
+  animation: soltar-iris 0s linear 6s forwards;
+}
+
+.con-iris #iris[hidden] {
+  display: none;
+}
+
+@keyframes soltar-iris {
+  to { visibility: hidden; }
+}
+
+/* ---------- Barras fijas ---------- */
+
+.barra {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--margen);
+  pointer-events: none;
+}
+
+.barra a {
+  pointer-events: auto;
+}
+
+.barra__marca {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.barra__marca img {
+  width: 30px;
+  height: auto;
+}
+
+.barra__accion {
+  padding: 9px 16px 10px;
+  border: 1px solid rgba(236, 210, 155, 0.65);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--oro-claro);
+  font-size: 15px;
+  line-height: 1.1;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.barra__accion:hover {
+  background: var(--oro-claro);
+  color: #000;
+}
+
+.salas {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 60;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: var(--alto-salas);
+  padding: 0 max(12px, calc((100vw - 760px) / 2)) env(safe-area-inset-bottom);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  font-size: clamp(12.5px, 3.45vw, 16px);
+}
+
+.salas a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--alto-salas);
+  color: rgba(251, 244, 231, 0.76);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.salas a:hover,
+.salas a[aria-current='page'],
+.salas a.activo {
+  color: var(--oro-claro);
+}
+
+.salas a[aria-current='page']::after,
+.salas a.activo::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 11px;
+  height: 1px;
+  background: var(--oro-claro);
+}
+
+/* ---------- Escenario de inicio ---------- */
+
+.escenario {
+  position: relative;
+}
+
+.con-iris .escenario {
+  height: calc(var(--n) * 100svh);
+}
+
+.con-iris .escenario__fijo {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+}
+
+.escena {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #000;
+}
+
+.con-iris .escena {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  visibility: hidden;
+}
+
+.con-iris .escena.activa {
+  visibility: visible;
+}
+
+.escena[data-sala='institucionales'] {
+  background: var(--zafiro);
+}
+
+.escena .fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.escena:not(.escena--cerrada)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0) 50%);
+}
+
+.escena.escena--inicio::after {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.22) 44%, rgba(0, 0, 0, 0) 58%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 34%);
+}
+
+.iris-escena {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.con-iris .iris-escena {
+  display: block;
+}
+
+.sobre {
+  z-index: 3;
+}
+
+.escena__texto {
+  position: absolute;
+  z-index: 1;
+  left: var(--margen);
+  right: var(--margen);
+  bottom: calc(var(--alto-salas) + clamp(18px, 4vh, 44px));
+}
+
+.escena__texto.sobre {
+  z-index: 3;
+}
+
+.escena__titulo {
+  display: block;
+  padding-right: 0.08em;
+  font: italic 500 11vw/1 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  width: max-content;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.4);
+}
+
+.escena__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+  margin-top: clamp(10px, 1.8vh, 18px);
+}
+
+.escena__pie p {
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+.escena__marca {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  width: min(80vw, 54vh, 560px);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.escena__marca img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 2px 14px rgba(0, 0, 0, 0.55));
+}
+
+.escena__marca p {
+  margin-top: clamp(8px, 1.6vh, 16px);
+  font: italic 400 clamp(18px, 2.3vw, 25px) / 1.25 var(--display);
+  text-wrap: balance;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.65);
+}
+
+.intro .escena__marca {
+  animation: aparecer 1s ease 0.1s both;
+}
+
+.intro .desliza {
+  animation: aparecer 0.8s ease 2.6s both;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.desliza {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--alto-salas) + 18px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border: 0;
+  background: none;
+  color: var(--marfil);
+  font: 400 16px/1.3 var(--texto);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.desliza svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--oro-claro);
+  stroke-width: 1.4;
+}
+
+.no-iris-oculto {
+  display: none;
+}
+
+.con-iris .no-iris-oculto {
+  display: flex;
+}
+
+/* El lente casi cerrado con la M en el centro */
+.lente-m {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: min(13vw, 13vh, 96px);
+  min-width: 56px;
+  transform: translate(-50%, -50%);
+}
+
+.lente-m img {
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Botones ---------- */
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 26px 11px;
+  border: 1px solid var(--oro-claro);
+  border-radius: 999px;
+  background: var(--oro-claro);
+  color: #000;
+  font-size: 17px;
+  line-height: 1.2;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.boton:hover {
+  background: transparent;
+  color: var(--oro-claro);
+}
+
+.boton:active {
+  background: var(--oro);
+  border-color: var(--oro);
+  color: #000;
+}
+
+.boton--linea {
+  background: transparent;
+  color: var(--oro-claro);
+}
+
+.boton--linea:hover {
+  background: var(--oro-claro);
+  color: #000;
+}
+
+/* ---------- Portada de categoría ---------- */
+
+/* El titular monta sobre el borde inferior de la foto; aquí se le reserva su parte
+   de abajo y la bajada para que el primer pantallazo no quede tapado por el menú. */
+.portada {
+  position: relative;
+  height: calc(100svh - var(--alto-salas) - 0.34 * var(--tamano-titular, 12vw) - clamp(44px, 7.5vh, 66px));
+  overflow: hidden;
+  background: var(--pared);
+}
+
+.portada picture,
+.portada .fondo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portada canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.encabezado {
+  position: relative;
+  z-index: 2;
+  padding: 0 var(--margen);
+}
+
+.titular {
+  display: inline-block;
+  margin-top: -0.66em;
+  padding-right: 0.08em;
+  font: italic 500 12vw/1 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.3);
+}
+
+.bajada {
+  max-width: 34em;
+  margin-top: clamp(8px, 1.6vh, 16px);
+  color: var(--oro-claro);
+  font-size: clamp(18px, 2.2vw, 23px);
+  line-height: 1.35;
+}
+
+.sala-cerrada .portada {
+  height: 100svh;
+}
+
+.sala-cerrada .portada::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--zafiro) 12%, rgba(15, 42, 92, 0) 56%);
+}
+
+.sala-cerrada .encabezado {
+  position: absolute;
+  inset: auto 0 calc(var(--alto-salas) + clamp(18px, 4vh, 44px));
+}
+
+.sala-cerrada .titular {
+  margin-top: 0;
+}
+
+.nota-cerrada {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+  margin-top: clamp(10px, 2vh, 20px);
+}
+
+.nota-cerrada p {
+  max-width: 30em;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.4;
+}
+
+/* ---------- Galería ---------- */
+
+.grupo {
+  padding-top: clamp(26px, 5vw, 72px);
+}
+
+.grupo__titulo {
+  margin: clamp(14px, 3vw, 46px) 0 clamp(12px, 1.8vw, 26px);
+  padding: 0 var(--margen);
+  color: var(--oro-claro);
+  font: italic 400 clamp(40px, 8.4vw, 118px) / 1.04 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+.fila {
+  display: flex;
+  gap: var(--junta);
+  margin-bottom: var(--junta);
+  padding: 0 var(--margen);
+}
+
+.fila--pleno {
+  padding: 0;
+  margin-block: clamp(14px, 3vw, 44px);
+}
+
+.fila--isla {
+  padding-inline: 8vw;
+  justify-content: center;
+}
+
+.fila--isla .foto {
+  flex: 0 1 min(84vw, 62vh);
+}
+
+.foto {
+  position: relative;
+  display: block;
+  flex: var(--proporcion) 1 0;
+  min-width: 0;
+  aspect-ratio: var(--proporcion);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.fila--pleno .foto {
+  max-height: 92svh;
+  width: 100%;
+  aspect-ratio: auto;
+  height: calc(100vw / var(--proporcion));
+}
+
+.foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Siguiente y contacto ---------- */
+
+#cierre {
+  background: #000;
+}
+
+.siguiente {
+  display: block;
+  padding: clamp(40px, 8vw, 110px) var(--margen) clamp(36px, 7vw, 96px);
+  background: var(--pared-siguiente);
+  overflow: hidden;
+}
+
+.siguiente span {
+  display: block;
+  color: var(--oro-claro);
+  font-size: clamp(17px, 2vw, 21px);
+}
+
+.siguiente strong {
+  display: block;
+  font: italic 500 clamp(44px, 11.2vw, 170px) / 1.04 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  transition: color 0.2s ease;
+}
+
+.siguiente:hover strong {
+  color: var(--oro-claro);
+}
+
+.contacto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100svh;
+  justify-content: center;
+  gap: clamp(12px, 2.4vh, 22px);
+  padding: 88px var(--margen) calc(var(--alto-salas) + 36px);
+  text-align: center;
+}
+
+.contacto h2 {
+  font: italic 500 clamp(36px, 10.6vw, 112px) / 1.04 var(--display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+.contacto > p:not(.contacto__ciudad) {
+  max-width: 26em;
+  text-wrap: balance;
+  font-size: clamp(18px, 2.2vw, 21px);
+  line-height: 1.4;
+}
+
+.contacto__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.contacto__usuario {
+  color: var(--oro-claro);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.contacto__firma {
+  width: min(66vw, 340px);
+  height: auto;
+  margin-top: clamp(20px, 5vh, 48px);
+}
+
+.contacto__ciudad {
+  color: rgba(251, 244, 231, 0.78);
+  font-size: 16px;
+}
+
+/* ---------- Visor ---------- */
+
+.visor {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #000;
+}
+
+.visor[hidden] {
+  display: none;
+}
+
+.visor__foto {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.visor__boton {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(236, 210, 155, 0.5);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--oro-claro);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.visor__boton:hover {
+  background: var(--oro-claro);
+  color: #000;
+}
+
+.visor__boton svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.visor__cerrar {
+  top: 14px;
+  right: 14px;
+}
+
+.visor__anterior {
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+}
+
+.visor__siguiente {
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+}
+
+.visor__cuenta {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--marfil);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+
+/* ---------- Ajustes de tamaño ---------- */
+
+@media (max-width: 699px) {
+  body {
+    padding-bottom: 0;
+  }
+
+  .barra__accion {
+    padding: 8px 13px 9px;
+    font-size: 14.5px;
+  }
+
+  .visor__anterior,
+  .visor__siguiente {
+    top: auto;
+    bottom: 10px;
+    transform: none;
+  }
+
+  .fila--trio {
+    --junta: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+html:not(.sala-cerrada) [data-solo-cerrada] {
+  display: none;
+}
+
+.sala-cerrada [data-solo-abierta] {
+  display: none;
+}

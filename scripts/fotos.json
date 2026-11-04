@@ -1,0 +1,147 @@
+{
+  "fuentes": {
+    "coso": "../Maritza Album/para el coso",
+    "album": "../Maritza Album/MartizaRodriguez-Album-Bodas/web/bodas"
+  },
+  "portadas": {
+    "inicio": { "h": "coso:sesion de playa/IMG_1024", "v": "coso:sesion de playa/IMG_1066" },
+    "bodas": { "h": "coso:Matrimonio/IMG_7369", "v": "coso:Matrimonio/IMG_7413" },
+    "quinceaneras": { "h": "coso:quinceañera/IMG_3744", "v": "coso:quinceañera/IMG_0174" },
+    "familiares": { "h": "coso:Familiares/IMG_4776", "v": "coso:Familiares/IMG_4384" }
+  },
+  "salas": {
+    "bodas": [
+      {
+        "titulo": "Preboda",
+        "alt": "Pareja en su sesión de preboda",
+        "filas": [
+          ["par", "album:IMG_9731", "album:IMG_9923"],
+          ["trio", "album:IMG_1534", "coso:Matrimonio/IMG_1730", "album:IMG_1563"],
+          ["par", "album:IMG_1461", "album:IMG_1489"],
+          ["par", "album:IMG_7665", "album:IMG_1816"],
+          ["trio", "album:IMG_0004", "album:IMG_1544", "album:IMG_0073"],
+          ["par", "album:IMG_0072", "album:IMG_1853"]
+        ]
+      },
+      {
+        "titulo": "Ceremonia",
+        "alt": "Ceremonia de boda",
+        "filas": [
+          ["pleno", "coso:Matrimonio/IMG_7459"],
+          ["trio", "album:IMG_4374", "album:IMG_7378", "coso:Matrimonio/IMG_7413"],
+          ["par", "album:IMG_3533", "coso:Matrimonio/IMG_7369"],
+          ["trio", "album:IMG_8522", "album:IMG_7003", "album:IMG_4141"],
+          ["par", "album:IMG_4220", "album:IMG_4488"],
+          ["par", "coso:Matrimonio/IMG_8577", "album:IMG_68081"]
+        ]
+      },
+      {
+        "titulo": "Retratos de pareja",
+        "alt": "Retrato de los novios",
+        "filas": [
+          ["trio", "album:IMG_3942", "album:IMG_7778", "album:IMG_4076"],
+          ["par", "album:IMG_7093", "album:IMG_6969"],
+          ["isla", "album:IMG_71301"],
+          ["trio", "album:IMG_3884", "album:IMG_7824", "album:IMG_7237"],
+          ["par", "album:IMG_71201", "album:IMG_7397"]
+        ]
+      },
+      {
+        "titulo": "La fiesta",
+        "alt": "Fiesta de boda",
+        "filas": [
+          ["pleno", "coso:Matrimonio/IMG_7897"],
+          ["par", "album:IMG_4260", "album:IMG_4237"],
+          ["trio", "coso:Matrimonio/IMG_7706", "album:IMG_7687", "coso:Matrimonio/IMG_7734"],
+          ["par", "album:IMG_7882", "album:IMG_7404"],
+          ["pleno", "coso:Matrimonio/IMG_7867"]
+        ]
+      },
+      {
+        "titulo": "Detalles",
+        "alt": "Detalle de la boda",
+        "filas": [
+          ["trio", "album:IMG_1722", "album:IMG_3285", "album:IMG_3286"],
+          ["par", "album:IMG_7320", "album:IMG_3297"]
+        ]
+      }
+    ],
+    "quinceaneras": [
+      {
+        "titulo": "Sesión",
+        "alt": "Quinceañera en su sesión de fotos",
+        "filas": [
+          ["pleno", "coso:quinceañera/IMG_50551"],
+          ["trio", "coso:quinceañera/IMG_0174", "coso:quinceañera/IMG_0213", "coso:quinceañera/IMG_36881"],
+          ["par", "coso:quinceañera/IMG_2225", "coso:quinceañera/IMG_6078"],
+          ["trio", "coso:quinceañera/IMG_0030", "coso:quinceañera/IMG_42271", "coso:quinceañera/IMG_4851"],
+          ["pleno", "coso:quinceañera/IMG_7277"],
+          ["trio", "coso:quinceañera/IMG_6832", "coso:quinceañera/IMG_6833", "coso:quinceañera/IMG_6867"],
+          ["par", "coso:quinceañera/IMG_6888", "coso:quinceañera/IMG_3744"],
+          ["trio", "coso:quinceañera/IMG_1737", "coso:quinceañera/IMG_36201", "coso:quinceañera/IMG_36631"],
+          ["par", "coso:quinceañera/IMG_6977", "coso:quinceañera/IMG_7035"],
+          ["trio", "coso:quinceañera/IMG_3846", "coso:quinceañera/IMG_4893", "coso:quinceañera/IMG_4933"],
+          ["par", "coso:quinceañera/IMG_9910-2", "coso:Detalles/IMG_6964"],
+          ["trio", "coso:Detalles/IMG_1665", "coso:Detalles/IMG_5964", "coso:Detalles/IMG_6041"],
+          ["trio", "coso:quinceañera/IMG_11311", "coso:quinceañera/IMG_7294", "coso:quinceañera/IMG_9969"]
+        ]
+      },
+      {
+        "titulo": "En la playa",
+        "alt": "Quinceañera en sesión de playa",
+        "filas": [
+          ["pleno", "coso:sesion de playa/IMG_1024"],
+          ["trio", "coso:sesion de playa/IMG_1066", "coso:sesion de playa/IMG_1304", "coso:sesion de playa/IMG_2384"],
+          ["pleno", "coso:sesion de playa/IMG_1234"],
+          ["par", "coso:sesion de playa/IMG_1583", "coso:sesion de playa/IMG_1588"],
+          ["par", "coso:sesion de playa/IMG_1496", "coso:sesion de playa/IMG_1521"],
+          ["par", "coso:sesion de playa/IMG_1061", "coso:sesion de playa/IMG_3255"]
+        ]
+      },
+      {
+        "titulo": "La fiesta",
+        "alt": "Fiesta de quinceañera",
+        "filas": [
+          ["pleno", "coso:fiesta/IMG_7728"],
+          ["par", "coso:fiesta/IMG_1441", "coso:fiesta/IMG_1445"],
+          ["par", "coso:fiesta/IMG_7864", "coso:fiesta/IMG_7550"],
+          ["trio", "coso:fiesta/IMG_8164", "coso:fiesta/IMG_3743", "coso:fiesta/IMG_6416"],
+          ["pleno", "coso:fiesta/IMG_3326"],
+          ["par", "coso:fiesta/IMG_3157", "coso:fiesta/IMG_7668"],
+          ["par", "coso:fiesta/IMG_3330", "coso:fiesta/IMG_3301"],
+          ["par", "coso:fiesta/IMG_1676", "coso:fiesta/IMG_6370"],
+          ["par", "coso:fiesta/IMG_3477", "coso:fiesta/IMG_8038"],
+          ["par", "coso:fiesta/IMG_2813", "coso:fiesta/IMG_7606"]
+        ]
+      },
+      {
+        "titulo": "Detalles",
+        "alt": "Detalle de la fiesta de quince",
+        "filas": [
+          ["pleno", "coso:Detalles/IMG_3422"],
+          ["trio", "coso:Detalles/IMG_2506", "coso:Detalles/IMG_4154", "coso:Detalles/IMG_4194"],
+          ["par", "coso:Detalles/IMG_2495", "coso:Detalles/IMG_2504"],
+          ["par", "coso:Detalles/IMG_2518", "coso:Detalles/IMG_48131"]
+        ]
+      }
+    ],
+    "familiares": [
+      {
+        "titulo": "",
+        "alt": "Sesión familiar",
+        "filas": [
+          ["pleno", "coso:Familiares/IMG_3406"],
+          ["trio", "coso:Familiares/IMG_4384", "coso:Familiares/IMG_2275", "coso:Familiares/IMG_9803"],
+          ["par", "coso:Familiares/IMG_3395", "coso:Familiares/IMG_3646"],
+          ["par", "coso:Familiares/IMG_4403", "coso:Familiares/IMG_49291"],
+          ["pleno", "coso:sesion de playa/IMG_2342"],
+          ["trio", "coso:Familiares/IMG_4045", "coso:Familiares/IMG_4955", "coso:Familiares/IMG_2692"],
+          ["par", "coso:Familiares/IMG_4776", "coso:Familiares/IMG_46631"],
+          ["par", "coso:Familiares/IMG_6205", "coso:quinceañera/IMG_7334"],
+          ["par", "coso:sesion de playa/IMG_1511", "coso:sesion de playa/IMG_3338"]
+        ]
+      }
+    ],
+    "institucionales": []
+  }
+}
