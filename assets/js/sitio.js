@@ -195,39 +195,30 @@
     return lista;
   }
 
-  /* Las fotos a todo el ancho se abren con la forma del diafragma al llegar a ellas. */
-  function revelarFotosGrandes() {
-    if (!conIris || !('IntersectionObserver' in window)) return;
+  /* Las fotos de la galería aparecen con un desvanecido al llegar a ellas. Esperan a
+     que la foto haya cargado: si no, el desvanecido pasaría sobre un recuadro vacío.
+     En una misma fila aparecen una tras otra. */
+  function aparecerFotos() {
+    const lista = [...document.querySelectorAll('#galeria .foto')];
+    if (!lista.length || !conIris || !('IntersectionObserver' in window)) return;
 
-    const radio = (caja) => Math.hypot(caja.width, caja.height) / 1.8;
     const observador = new IntersectionObserver(
       (entradas) => {
         entradas.forEach((entrada) => {
           if (!entrada.isIntersecting) return;
-          const contenedor = entrada.target;
-          observador.unobserve(contenedor);
-          const imagen = contenedor.querySelector('img');
-          const caja = contenedor.getBoundingClientRect();
-          const cx = caja.width / 2;
-          const cy = caja.height / 2;
-          imagen.style.clipPath = '';
-          imagen.animate(
-            [{ clipPath: Iris.recorte(cx, cy, 0, 0.9) }, { clipPath: Iris.recorte(cx, cy, radio(caja), 0) }],
-            { duration: 750, easing: 'cubic-bezier(.7, 0, .2, 1)' }
-          );
+          const foto = entrada.target;
+          observador.unobserve(foto);
+          esperarImagen(foto.querySelector('img'), 2500).then(() => foto.classList.add('a-la-vista'));
         });
       },
-      { threshold: 0.2 }
+      { rootMargin: '0px 0px -6% 0px', threshold: 0.1 }
     );
 
-    /* El recorte va en la imagen y se observa su contenedor: un elemento recortado
-       a cero no llega a contar como visible para el observador. */
-    document.querySelectorAll('.fila--pleno .foto').forEach((contenedor) => {
-      const caja = contenedor.getBoundingClientRect();
-      contenedor.style.background = 'none';
-      contenedor.querySelector('img').style.clipPath = Iris.recorte(caja.width / 2, caja.height / 2, 0);
-      observador.observe(contenedor);
+    lista.forEach((foto) => {
+      foto.style.setProperty('--orden', [...foto.parentElement.children].indexOf(foto));
+      observador.observe(foto);
     });
+    raiz.classList.add('fotos-con-entrada');
   }
 
   /* ---------- Visor de fotos ---------- */
@@ -750,7 +741,7 @@
   montarCategorias();
   const lista = montarGaleria();
   montarVisor(lista);
-  revelarFotosGrandes();
+  aparecerFotos();
   interceptarEnlaces();
   anticiparPaginas();
   ajustarTitulares();

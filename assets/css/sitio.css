@@ -793,6 +793,16 @@ p {
   object-fit: cover;
 }
 
+/* Entrada de las fotos al bajar: la clase la pone el script solo si puede animar. */
+.fotos-con-entrada .foto {
+  opacity: 0;
+  transition: opacity 0.9s ease calc(var(--orden, 0) * 110ms);
+}
+
+.fotos-con-entrada .foto.a-la-vista {
+  opacity: 1;
+}
+
 /* ---------- Siguiente y contacto ---------- */
 
 #cierre {

@@ -28,7 +28,7 @@ PLANTILLA = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@400;500&display=swap">
-  <link rel="stylesheet" href="assets/css/sitio.css?v=6">
+  <link rel="stylesheet" href="assets/css/sitio.css?v=7">
   <script>
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('con-iris');
   </script>
@@ -55,10 +55,10 @@ PLANTILLA = """<!doctype html>
   <footer id="cierre"></footer>
 
   <noscript><p><a href="https://www.instagram.com/maritza._rodriguez/">Ver mi trabajo en Instagram</a></p></noscript>
-  <script src="assets/js/config.js?v=6"></script>
-  <script src="assets/js/fotos.js?v=6"></script>
-  <script src="assets/js/iris.js?v=6"></script>
-  <script src="assets/js/sitio.js?v=6"></script>
+  <script src="assets/js/config.js?v=7"></script>
+  <script src="assets/js/fotos.js?v=7"></script>
+  <script src="assets/js/iris.js?v=7"></script>
+  <script src="assets/js/sitio.js?v=7"></script>
 </body>
 </html>
 """
