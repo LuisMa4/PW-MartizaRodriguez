@@ -10,6 +10,7 @@
     "familiares": { "h": "coso:Familiares/IMG_4776", "v": "coso:Familiares/IMG_4384" },
     "ninos": { "h": "coso:Niños/IMG_1862", "v": "coso:Niños/IMG_57902" },
     "embarazo": { "h": "coso:Embarazo/IMG_7417", "v": "coso:Embarazo/IMG_7410" },
+    "navidad": { "h": "coso:Navidad/IMG_8867", "v": "coso:Navidad/IMG_8739" },
     "institucionales": { "h": "coso:Promociones de colegios/IMG_5594", "v": "coso:Graduaciones/IMG_6803" }
   },
   "salas": {
@@ -130,7 +131,7 @@
     ],
     "familiares": [
       {
-        "titulo": "En familia",
+        "titulo": "",
         "alt": "Sesión familiar",
         "filas": [
           ["pleno", "coso:Familiares/IMG_3406"],
@@ -148,18 +149,6 @@
           ["par", "coso:Familiares/IMG_6205", "coso:quinceañera/IMG_7334"],
           ["par", "coso:Familiares/IMG_0051", "coso:Familiares/IMG_0188"],
           ["par", "coso:sesion de playa/IMG_1511", "coso:sesion de playa/IMG_3338"]
-        ]
-      },
-      {
-        "titulo": "Navidad",
-        "alt": "Sesión de fotos navideña",
-        "filas": [
-          ["pleno", "coso:Navidad/IMG_7215"],
-          ["trio", "coso:Navidad/IMG_0226", "coso:Navidad/IMG_8739", "coso:Navidad/IMG_8690"],
-          ["trio", "coso:Navidad/IMG_4572", "coso:Navidad/IMG_4603", "coso:Navidad/IMG_4617"],
-          ["par", "coso:Navidad/IMG_0308", "coso:Navidad/IMG_7107"],
-          ["pleno", "coso:Navidad/IMG_8867"],
-          ["trio", "coso:Navidad/IMG_8574", "coso:Navidad/IMG_8746-3", "coso:Navidad/IMG_8922"]
         ]
       }
     ],
@@ -197,6 +186,20 @@
           ["trio", "coso:Embarazo/IMG_3762", "coso:Embarazo/IMG_3795", "coso:Embarazo/IMG_7321"],
           ["par", "coso:Embarazo/IMG_7417", "coso:Embarazo/IMG_7410"],
           ["pleno", "coso:Embarazo/IMG_3754"]
+        ]
+      }
+    ],
+    "navidad": [
+      {
+        "titulo": "",
+        "alt": "Sesión de fotos navideña",
+        "filas": [
+          ["pleno", "coso:Navidad/IMG_7215"],
+          ["trio", "coso:Navidad/IMG_0226", "coso:Navidad/IMG_8739", "coso:Navidad/IMG_8690"],
+          ["trio", "coso:Navidad/IMG_4572", "coso:Navidad/IMG_4603", "coso:Navidad/IMG_4617"],
+          ["par", "coso:Navidad/IMG_0308", "coso:Navidad/IMG_7107"],
+          ["pleno", "coso:Navidad/IMG_8867"],
+          ["trio", "coso:Navidad/IMG_8574", "coso:Navidad/IMG_8746-3", "coso:Navidad/IMG_8922"]
         ]
       }
     ],

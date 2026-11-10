@@ -8,6 +8,7 @@
     { id: 'familiares', nombre: 'Familiares', href: 'familiares.html', pared: '#0e3a2d' },
     { id: 'ninos', nombre: 'Niños', href: 'ninos.html', pared: '#523307' },
     { id: 'embarazo', nombre: 'Embarazo', href: 'embarazo.html', pared: '#0c3d47' },
+    { id: 'navidad', nombre: 'Navidad', href: 'navidad.html', pared: '#5b1a12' },
     { id: 'institucionales', nombre: 'Institucionales', href: 'institucionales.html', pared: '#0f2a5c' },
   ];
 
@@ -72,7 +73,7 @@
       boton.href = enlaceWhatsapp;
     });
 
-    /* En pantallas angostas no caben las seis categorías: el menú se desliza de
+    /* En pantallas angostas no caben todas las categorías: el menú se desliza de
        lado, con la categoría actual al centro y un desvanecido que avisa que hay más. */
     const menu = document.querySelector('.salas');
     const actual = menu.querySelector('[aria-current]');
@@ -714,7 +715,7 @@
       }
       const foto = portada.v;
       return `<a class="tarjeta" href="${item.href}" style="--pared-tarjeta:${item.pared}">
-        <img src="${foto.src}-${foto.lados[0]}.webp" srcset="${fuentes(foto)}" sizes="(min-width: 700px) 33vw, 50vw"
+        <img src="${foto.src}-${foto.lados[0]}.webp" srcset="${fuentes(foto)}" sizes="(min-width: 1100px) 25vw, (min-width: 700px) 33vw, 50vw"
           alt="" loading="lazy" decoding="async">
         <strong>${item.nombre}</strong>
       </a>`;

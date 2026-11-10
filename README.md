@@ -1,6 +1,6 @@
 # Maritza Rodríguez Fotografía
 
-Sitio web de una sola marca con seis categorías: bodas, quinceañeras, familiares, niños, embarazo e institucionales. Es un sitio estático: HTML, CSS y JavaScript, sin dependencias que instalar.
+Sitio web de una sola marca con siete categorías: bodas, quinceañeras, familiares, niños, embarazo, Navidad e institucionales. Es un sitio estático: HTML, CSS y JavaScript, sin dependencias que instalar.
 
 ## Verlo en tu computadora
 
