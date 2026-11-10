@@ -55,12 +55,20 @@
       return `<a href="${item.href}" data-sala-enlace="${item.id}"${actual}>${item.nombre}</a>`;
     }).join('');
 
+    /* En el inicio va la marca; en una categoría, un botón claro para volver al inicio. */
+    const izquierda = sala
+      ? `<a class="barra__accion barra__regresar" href="index.html" aria-label="Regresar al inicio">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span>Regresar</span>
+        </a>`
+      : `<a class="barra__marca" href="index.html" aria-label="Maritza Rodríguez Fotografía, inicio">
+          <img src="assets/logos/monograma.webp" alt="" width="300" height="240">
+        </a>`;
+
     document.body.insertAdjacentHTML(
       'beforeend',
       `<header class="barra">
-        <a class="barra__marca" href="index.html" aria-label="Maritza Rodríguez Fotografía, inicio">
-          <img src="assets/logos/monograma.webp" alt="" width="300" height="240">
-        </a>
+        ${izquierda}
         <div class="barra__acciones">
           ${iconos}
           <a class="barra__accion" href="${enlaceWhatsapp}" target="_blank" rel="noopener">Coordina tu sesión</a>

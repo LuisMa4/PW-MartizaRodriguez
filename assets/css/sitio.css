@@ -196,6 +196,29 @@ p {
   color: #000;
 }
 
+.barra__regresar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-left: 12px;
+}
+
+.barra__regresar svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.barra__regresar:hover svg {
+  transform: translateX(-3px);
+}
+
 .salas {
   position: fixed;
   inset: auto 0 0;
@@ -1014,6 +1037,10 @@ p {
     font-size: 14.5px;
   }
 
+  .barra__accion.barra__regresar {
+    padding-left: 10px;
+  }
+
   .visor__anterior,
   .visor__siguiente {
     top: auto;
@@ -1023,6 +1050,20 @@ p {
 
   .fila--trio {
     --junta: 3px;
+  }
+}
+
+/* En los celulares más angostos el botón Regresar queda solo con la flecha. */
+@media (max-width: 359px) {
+  .barra__accion.barra__regresar {
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+  }
+
+  .barra__regresar span {
+    display: none;
   }
 }
 
