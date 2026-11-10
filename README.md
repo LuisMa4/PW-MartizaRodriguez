@@ -1,6 +1,6 @@
 # Maritza Rodríguez Fotografía
 
-Sitio web de una sola marca con cuatro categorías: bodas, quinceañeras, familiares e institucionales. Es un sitio estático: HTML, CSS y JavaScript, sin dependencias que instalar.
+Sitio web de una sola marca con seis categorías: bodas, quinceañeras, familiares, niños, embarazo e institucionales. Es un sitio estático: HTML, CSS y JavaScript, sin dependencias que instalar.
 
 ## Verlo en tu computadora
 
@@ -27,24 +27,26 @@ Todo está en `assets/js/config.js`: Instagram, Facebook, ciudad y WhatsApp. Las
 
 Las rutas de `fuentes` apuntan a los originales en `../Maritza Album`. Esa carpeta solo hace falta para procesar fotos nuevas, no para publicar el sitio.
 
-## Abrir la categoría Institucionales
+## Categorías sin fotos
 
-Hoy muestra el lente casi cerrado porque todavía no tiene fotos. En `scripts/fotos.json`:
+Una categoría sin portada en `scripts/fotos.json` muestra el lente casi cerrado y queda fuera de la animación del inicio. Para abrirla:
 
-1. Agrega las fotos en `salas.institucionales`, con el mismo formato de las otras categorías.
+1. Agrega sus fotos en `salas`, con el mismo formato de las otras categorías.
 2. Agrega su portada en `portadas`, con una foto horizontal (`h`) y una vertical (`v`):
 
    ```json
-   "institucionales": { "h": "coso:Carpeta/IMG_0001", "v": "coso:Carpeta/IMG_0002" }
+   "ninos": { "h": "coso:Carpeta/IMG_0001", "v": "coso:Carpeta/IMG_0002" }
    ```
 
 3. Ejecuta `python scripts/preparar_fotos.py`.
 
 El lente se abre solo en la página de la categoría y en su tarjeta del inicio, y la categoría entra sola a la animación del inicio.
 
+Para sumar una categoría nueva, además hay que agregarla en `SALAS` dentro de `assets/js/sitio.js`, en `PAGINAS` dentro de `scripts/crear_paginas.py`, con su escena en `index.html` y su color en `assets/css/sitio.css`.
+
 ## Cambiar el texto de las páginas
 
-El inicio se edita directamente en `index.html`. Para cambiar cuánto dura cada escena de su animación, edita `--espera` en `assets/css/sitio.css`. Las cuatro páginas de categoría salen de una plantilla: edita `scripts/crear_paginas.py` y ejecútalo con `python scripts/crear_paginas.py`.
+El inicio se edita directamente en `index.html`. Para cambiar cuánto dura cada escena de su animación, edita `--espera` en `assets/css/sitio.css`. Las páginas de categoría salen de una plantilla: edita `scripts/crear_paginas.py` y ejecútalo con `python scripts/crear_paginas.py`.
 
 ## Publicar
 

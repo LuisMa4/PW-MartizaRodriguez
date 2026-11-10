@@ -6,6 +6,8 @@
     { id: 'bodas', nombre: 'Bodas', href: 'bodas.html', pared: '#4c0f22' },
     { id: 'quinceaneras', nombre: 'Quinceañeras', href: 'quinceaneras.html', pared: '#45164f' },
     { id: 'familiares', nombre: 'Familiares', href: 'familiares.html', pared: '#0e3a2d' },
+    { id: 'ninos', nombre: 'Niños', href: 'ninos.html', pared: '#523307' },
+    { id: 'embarazo', nombre: 'Embarazo', href: 'embarazo.html', pared: '#0c3d47' },
     { id: 'institucionales', nombre: 'Institucionales', href: 'institucionales.html', pared: '#0f2a5c' },
   ];
 
@@ -69,6 +71,18 @@
     document.querySelectorAll('[data-contacto]').forEach((boton) => {
       boton.href = enlaceWhatsapp;
     });
+
+    /* En pantallas angostas no caben las seis categorías: el menú se desliza de
+       lado, con la categoría actual al centro y un desvanecido que avisa que hay más. */
+    const menu = document.querySelector('.salas');
+    const actual = menu.querySelector('[aria-current]');
+    function medirMenu() {
+      menu.classList.toggle('salas--desliza', menu.scrollWidth > menu.clientWidth + 1);
+      if (actual) menu.scrollLeft = actual.offsetLeft - (menu.clientWidth - actual.offsetWidth) / 2;
+    }
+    medirMenu();
+    window.addEventListener('resize', medirMenu);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medirMenu);
   }
 
   function montarCierre() {
@@ -700,7 +714,7 @@
       }
       const foto = portada.v;
       return `<a class="tarjeta" href="${item.href}" style="--pared-tarjeta:${item.pared}">
-        <img src="${foto.src}-${foto.lados[0]}.webp" srcset="${fuentes(foto)}" sizes="(min-width: 1000px) 25vw, 50vw"
+        <img src="${foto.src}-${foto.lados[0]}.webp" srcset="${fuentes(foto)}" sizes="(min-width: 700px) 33vw, 50vw"
           alt="" loading="lazy" decoding="async">
         <strong>${item.nombre}</strong>
       </a>`;

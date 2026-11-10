@@ -6,6 +6,8 @@
   --amatista: #45164f;
   --esmeralda: #0e3a2d;
   --zafiro: #0f2a5c;
+  --ambar: #523307;
+  --aguamarina: #0c3d47;
   --pared: #000;
 
   --margen: clamp(16px, 3.2vw, 44px);
@@ -20,6 +22,8 @@
 html[data-sala='bodas'] { --pared: var(--rubi); }
 html[data-sala='quinceaneras'] { --pared: var(--amatista); }
 html[data-sala='familiares'] { --pared: var(--esmeralda); }
+html[data-sala='ninos'] { --pared: var(--ambar); }
+html[data-sala='embarazo'] { --pared: var(--aguamarina); }
 html[data-sala='institucionales'] { --pared: var(--zafiro); }
 
 *,
@@ -202,11 +206,26 @@ p {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(14px) saturate(1.3);
   -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  font-size: clamp(12.5px, 3.45vw, 16px);
+  font-size: clamp(13px, 3.45vw, 16px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.salas::-webkit-scrollbar {
+  display: none;
+}
+
+.salas--desliza {
+  gap: 22px;
+  padding-inline: 16px 28px;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14px, #000 calc(100% - 36px), transparent);
 }
 
 .salas a {
   position: relative;
+  flex: none;
   display: flex;
   align-items: center;
   height: var(--alto-salas);
@@ -920,9 +939,19 @@ p {
 
 /* ---------- Ajustes de tamaño ---------- */
 
+@media (min-width: 700px) {
+  .categorias__lista {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tarjeta strong {
+    font-size: clamp(24px, 3.2vw, 46px);
+  }
+}
+
 /* En computadora las categorías pasan a la barra superior; en el celular siguen
    abajo, al alcance del pulgar. */
-@media (min-width: 1000px) {
+@media (min-width: 1180px) {
   :root {
     --alto-salas: 0px;
   }
@@ -952,14 +981,6 @@ p {
 
   .salas a[aria-current='page']::after {
     bottom: 18px;
-  }
-
-  .categorias__lista {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .tarjeta strong {
-    font-size: clamp(26px, 2.9vw, 46px);
   }
 }
 

@@ -28,7 +28,7 @@ PLANTILLA = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@400;500&display=swap">
-  <link rel="stylesheet" href="assets/css/sitio.css?v=3">
+  <link rel="stylesheet" href="assets/css/sitio.css?v=4">
   <script>
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('con-iris');
   </script>
@@ -45,7 +45,7 @@ PLANTILLA = """<!doctype html>
       <h1 class="titular" data-ajustar="0.34">{nombre}</h1>
       <p class="bajada" data-solo-abierta>{bajada}</p>
       <div class="nota-cerrada" data-solo-cerrada>
-        <p>Estoy preparando esta galería. Si tu institución necesita fotos de ceremonias, equipos o eventos, escríbeme.</p>
+        <p>Estoy preparando esta galería. Si tu institución necesita fotos de promociones, graduaciones o productos, escríbeme.</p>
         <a class="boton" target="_blank" rel="noopener" data-contacto>Escribir por WhatsApp</a>
       </div>
     </div>
@@ -55,10 +55,10 @@ PLANTILLA = """<!doctype html>
   <footer id="cierre"></footer>
 
   <noscript><p><a href="https://www.instagram.com/maritza._rodriguez/">Ver mi trabajo en Instagram</a></p></noscript>
-  <script src="assets/js/config.js?v=3"></script>
-  <script src="assets/js/fotos.js?v=3"></script>
-  <script src="assets/js/iris.js?v=3"></script>
-  <script src="assets/js/sitio.js?v=3"></script>
+  <script src="assets/js/config.js?v=4"></script>
+  <script src="assets/js/fotos.js?v=4"></script>
+  <script src="assets/js/iris.js?v=4"></script>
+  <script src="assets/js/sitio.js?v=4"></script>
 </body>
 </html>
 """
@@ -92,13 +92,31 @@ PAGINAS = (
         "descripcion": "Sesiones de fotos familiares en Tacna, Perú: padres, hijos y hermanos, juntos.",
     },
     {
+        "id": "ninos",
+        "archivo": "ninos.html",
+        "nombre": "Niños",
+        "pared": "#523307",
+        "og": "ninos",
+        "bajada": "Retratos, cumpleaños y sesiones temáticas.",
+        "descripcion": "Fotografía infantil en Tacna, Perú: retratos, cumpleaños y sesiones temáticas.",
+    },
+    {
+        "id": "embarazo",
+        "archivo": "embarazo.html",
+        "nombre": "Embarazo",
+        "pared": "#0c3d47",
+        "og": "embarazo",
+        "bajada": "Sesiones de maternidad, sola o en familia.",
+        "descripcion": "Fotografía de embarazo en Tacna, Perú: sesiones de maternidad, sola o en familia.",
+    },
+    {
         "id": "institucionales",
         "archivo": "institucionales.html",
         "nombre": "Institucionales",
         "pared": "#0f2a5c",
-        "og": "inicio",
-        "bajada": "Ceremonias, equipos y eventos.",
-        "descripcion": "Fotografía institucional en Tacna, Perú: ceremonias, equipos y eventos.",
+        "og": "institucionales",
+        "bajada": "Promociones de colegios, graduaciones y productos.",
+        "descripcion": "Fotografía institucional en Tacna, Perú: promociones de colegios, graduaciones y fotografía de producto.",
     },
 )
 

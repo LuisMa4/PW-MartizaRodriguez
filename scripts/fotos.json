@@ -7,7 +7,10 @@
     "inicio": { "h": "coso:sesion de playa/IMG_1024", "v": "coso:sesion de playa/IMG_1066" },
     "bodas": { "h": "coso:Matrimonio/IMG_7369", "v": "coso:Matrimonio/IMG_7413" },
     "quinceaneras": { "h": "coso:quinceañera/IMG_3744", "v": "coso:quinceañera/IMG_0174" },
-    "familiares": { "h": "coso:Familiares/IMG_4776", "v": "coso:Familiares/IMG_4384" }
+    "familiares": { "h": "coso:Familiares/IMG_4776", "v": "coso:Familiares/IMG_4384" },
+    "ninos": { "h": "coso:Niños/IMG_1862", "v": "coso:Niños/IMG_57902" },
+    "embarazo": { "h": "coso:Embarazo/IMG_7417", "v": "coso:Embarazo/IMG_7410" },
+    "institucionales": { "h": "coso:Promociones de colegios/IMG_5594", "v": "coso:Graduaciones/IMG_6803" }
   },
   "salas": {
     "bodas": [
@@ -127,21 +130,104 @@
     ],
     "familiares": [
       {
-        "titulo": "",
+        "titulo": "En familia",
         "alt": "Sesión familiar",
         "filas": [
           ["pleno", "coso:Familiares/IMG_3406"],
+          ["par", "coso:Familiares/IMG_2095", "coso:Familiares/IMG_1838"],
           ["trio", "coso:Familiares/IMG_4384", "coso:Familiares/IMG_2275", "coso:Familiares/IMG_9803"],
           ["par", "coso:Familiares/IMG_3395", "coso:Familiares/IMG_3646"],
+          ["pleno", "coso:Familiares/IMG_7170"],
+          ["trio", "coso:Familiares/IMG_9636", "coso:Familiares/IMG_9642", "coso:Familiares/IMG_7148"],
           ["par", "coso:Familiares/IMG_4403", "coso:Familiares/IMG_49291"],
           ["pleno", "coso:sesion de playa/IMG_2342"],
+          ["par", "coso:Familiares/IMG_7091", "coso:Familiares/IMG_5508"],
           ["trio", "coso:Familiares/IMG_4045", "coso:Familiares/IMG_4955", "coso:Familiares/IMG_2692"],
           ["par", "coso:Familiares/IMG_4776", "coso:Familiares/IMG_46631"],
+          ["par", "coso:Familiares/IMG_0165", "coso:Familiares/IMG_5523"],
           ["par", "coso:Familiares/IMG_6205", "coso:quinceañera/IMG_7334"],
+          ["par", "coso:Familiares/IMG_0051", "coso:Familiares/IMG_0188"],
           ["par", "coso:sesion de playa/IMG_1511", "coso:sesion de playa/IMG_3338"]
+        ]
+      },
+      {
+        "titulo": "Navidad",
+        "alt": "Sesión de fotos navideña",
+        "filas": [
+          ["pleno", "coso:Navidad/IMG_7215"],
+          ["trio", "coso:Navidad/IMG_0226", "coso:Navidad/IMG_8739", "coso:Navidad/IMG_8690"],
+          ["trio", "coso:Navidad/IMG_4572", "coso:Navidad/IMG_4603", "coso:Navidad/IMG_4617"],
+          ["par", "coso:Navidad/IMG_0308", "coso:Navidad/IMG_7107"],
+          ["pleno", "coso:Navidad/IMG_8867"],
+          ["trio", "coso:Navidad/IMG_8574", "coso:Navidad/IMG_8746-3", "coso:Navidad/IMG_8922"]
         ]
       }
     ],
-    "institucionales": []
+    "ninos": [
+      {
+        "titulo": "",
+        "alt": "Sesión de fotos infantil",
+        "filas": [
+          ["pleno", "coso:Niños/IMG_1862"],
+          ["par", "coso:Niños/IMG_1868", "coso:Niños/IMG_1937"],
+          ["trio", "coso:Niños/IMG_5241", "coso:Niños/IMG_52651", "coso:Niños/IMG_5404"],
+          ["par", "coso:Niños/IMG_6702", "coso:Niños/IMG_6234"],
+          ["trio", "coso:Niños/IMG_1897-2", "coso:Niños/IMG_1912", "coso:Niños/IMG_2020"],
+          ["par", "coso:Niños/IMG_41401", "coso:Niños/IMG_55243"],
+          ["trio", "coso:Niños/IMG_40361", "coso:Niños/IMG_0670", "coso:Niños/IMG_9485"],
+          ["pleno", "coso:Niños/Gema5"],
+          ["trio", "coso:Niños/gema3", "coso:Niños/Gema6-2", "coso:Niños/gema9-3"],
+          ["par", "coso:Niños/IMG_1722", "coso:Niños/IMG_1803"],
+          ["trio", "coso:Niños/IMG_57902", "coso:Niños/IMG_78971", "coso:Niños/IMG_27481"],
+          ["pleno", "coso:Niños/IMG_2260"],
+          ["trio", "coso:Niños/IMG_2063", "coso:Niños/IMG_2234", "coso:Niños/IMG_3926"],
+          ["trio", "coso:Niños/IMG_3034", "coso:Niños/IMG_2904", "coso:Niños/IMG_3243-2"],
+          ["par", "coso:Niños/IMG_87952", "coso:Niños/IMG_21294"],
+          ["trio", "coso:Niños/IMG_4061", "coso:Niños/IMG_83191", "coso:Niños/IMG_8356"],
+          ["pleno", "coso:Niños/IMG_8336"]
+        ]
+      }
+    ],
+    "embarazo": [
+      {
+        "titulo": "",
+        "alt": "Sesión de embarazo",
+        "filas": [
+          ["pleno", "coso:Embarazo/IMG_3849"],
+          ["trio", "coso:Embarazo/IMG_3762", "coso:Embarazo/IMG_3795", "coso:Embarazo/IMG_7321"],
+          ["par", "coso:Embarazo/IMG_7417", "coso:Embarazo/IMG_7410"],
+          ["pleno", "coso:Embarazo/IMG_3754"]
+        ]
+      }
+    ],
+    "institucionales": [
+      {
+        "titulo": "Promociones de colegios",
+        "alt": "Promoción escolar",
+        "filas": [
+          ["pleno", "coso:Promociones de colegios/IMG_4475"],
+          ["par", "coso:Promociones de colegios/IMG_5575", "coso:Promociones de colegios/IMG_5594"],
+          ["par", "coso:Promociones de colegios/IMG_4305", "coso:Promociones de colegios/IMG_4494"],
+          ["pleno", "coso:Promociones de colegios/IMG_4467"]
+        ]
+      },
+      {
+        "titulo": "Graduaciones",
+        "alt": "Retrato de graduación",
+        "filas": [
+          ["trio", "coso:Graduaciones/IMG_6803", "coso:Graduaciones/IMG_6931", "coso:Graduaciones/IMG_6975"]
+        ]
+      },
+      {
+        "titulo": "Productos",
+        "alt": "Fotografía de producto",
+        "filas": [
+          ["pleno", "coso:Productos/IMG_2056"],
+          ["par", "coso:Productos/IMG_1903", "coso:Productos/IMG_1940"],
+          ["trio", "coso:Productos/IMG_2152", "coso:Productos/IMG_2162", "coso:Productos/IMG_2217"],
+          ["par", "coso:Productos/IMG_2183", "coso:Productos/IMG_2234"]
+        ]
+      }
+    ]
   }
 }
